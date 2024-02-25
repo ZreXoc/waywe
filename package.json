@@ -1,6 +1,6 @@
 {
     "name": "waywe",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "wallpaper with wallpaperengine and mpvpaper",
     "main": "index.js",
     "type": "module",
@@ -12,12 +12,20 @@
         "stop": "node index.js stop",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "",
-    "license": "ISC",
+    "author": {"name":"ZreXoc","email": "zeexoc@outlook.com"},
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ZreXoc/waywe"
+    },
+    "keywords": [
+        "cli",
+        "wallpaper",
+        "wayland"
+    ],
     "dependencies": {
         "@inquirer/prompts": "^4.1.0",
         "commander": "^12.0.0",
-        "forever-monitor": "^3.0.3",
         "shelljs": "^0.8.5"
     }
 }
