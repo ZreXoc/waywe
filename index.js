@@ -1,11 +1,15 @@
 #! /usr/bin/env node
-import path from "path";
+import path, { dirname } from "path";
 import os from "os";
 import fs from "fs";
-import childProcess from 'child_process'
+import childProcess from "child_process";
 import { program } from "commander";
 import shell from "shelljs";
 import { select } from "@inquirer/prompts";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const validExt = [".mp4"];
 const waywePlaylistPath = "/tmp/wayme-playlist";
@@ -27,12 +31,12 @@ program
 program
     .command("send")
     .argument("<command>", "send mpv Input Command to socket")
-    .action((command)=>sendMpvCommand(command));
+    .action((command) => sendMpvCommand(command));
 
 program
     .command("attach")
-.description("attach to mpv interactive control")
-    .action(()=>{
+    .description("attach to mpv interactive control")
+    .action(() => {
         //shell.exec("tmux attach -t waywe")
         childProcess.spawn("tmux", ["attach", "-t", "waywe"], {
             detached: true,
@@ -42,11 +46,11 @@ program
 
 // mpv commands
 [
-    ["stop", "quit 0","stop playing wallpaper"],
+    ["stop", "quit 0", "stop playing wallpaper"],
     ["unpause", "set pause no"],
     ["pause", "set pause yes"],
-    ["next", "playlist-next" ,"next wallpaper"],
-    ["preview", "playlist-prev","previous wallpaper"],
+    ["next", "playlist-next", "next wallpaper"],
+    ["preview", "playlist-prev", "previous wallpaper"],
 ].forEach(([command, mpvCommand]) => {
     program.command(command).action(() => sendMpvCommand(mpvCommand));
 });
@@ -100,7 +104,7 @@ async function runMpvpaper(playlist, options) {
     const { settings } = playlist;
     const mpvOptions = [
         options.mpvOptions,
-        `--scripts=./mpv_scripts/`,
+        `--scripts=${path.resolve(__dirname, "./mpv_scripts")}`,
         `--playlist=${waywePlaylistPath}`,
         `input-ipc-server=${wayweSocket}`,
     ];
@@ -110,9 +114,7 @@ async function runMpvpaper(playlist, options) {
 
     // work with https://github.com/ZreXoc/mpv-loop-until
     if (settings.mode == "timer")
-        mpvOptions.push(
-            `--script-opts=delay-delay=${settings.delay * 60}`
-        );
+        mpvOptions.push(`--script-opts=delay-delay=${settings.delay * 60}`);
 
     console.info(`[Running] mpvpaper "*" -o "${mpvOptions.join(" ")}"`);
     //const mpvpaper = child_process.exec(command, () => {});
@@ -167,13 +169,12 @@ async function runMpvpaper(playlist, options) {
      *    );
      *}).disconnect().unref();
      */
-     shell.exec("tmux new -s waywe -d"
-        );
-     shell.exec(
-            `tmux send-keys -t waywe 'mpvpaper "*" -o "${mpvOptions.join(
-                " "
-            )}"' Enter`
-        );
+    shell.exec("tmux new -s waywe -d");
+    shell.exec(
+        `tmux send-keys -t waywe 'mpvpaper "*" -o "${mpvOptions.join(
+            " "
+        )}"' Enter`
+    );
     //await onExit(mpvpaper);
 }
 function onExit(childProcess) {
@@ -191,8 +192,7 @@ function onExit(childProcess) {
     });
 }
 
-
 function sendMpvCommand(commands) {
-    console.log(commands,`echo "${commands}" | socat - ${wayweSocket}`);
+    console.log(commands, `echo "${commands}" | socat - ${wayweSocket}`);
     shell.exec(`echo "${commands}" | socat - ${wayweSocket}`);
 }
