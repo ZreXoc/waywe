@@ -19,6 +19,7 @@ program.name("waywe").version("0.1.0");
 
 program
     .command("start")
+    .option("-m, --monitor <name>", "output")
     .option("-p, --playlist <name>", "name of playlist")
     .option(
         "--steamroot <path>",
@@ -116,7 +117,11 @@ async function runMpvpaper(playlist, options) {
     if (settings.mode == "timer")
         mpvOptions.push(`--script-opts=delay-delay=${settings.delay * 60}`);
 
-    console.info(`[Running] mpvpaper "*" -o "${mpvOptions.join(" ")}"`);
+    console.info(
+        `[Running] mpvpaper "${options.monitor || "*"}" -o "${mpvOptions.join(
+            " "
+        )}"`
+    );
     //const mpvpaper = child_process.exec(command, () => {});
     /*
      *    const mpvpaper =new (forever.Monitor) (forever.start(
@@ -171,9 +176,9 @@ async function runMpvpaper(playlist, options) {
      */
     shell.exec("tmux new -s waywe -d");
     shell.exec(
-        `tmux send-keys -t waywe 'mpvpaper "*" -o "${mpvOptions.join(
-            " "
-        )}"' Enter`
+        `tmux send-keys -t waywe 'mpvpaper "${
+            options.monitor
+        }" -o "${mpvOptions.join(" ")}"' Enter`
     );
     //await onExit(mpvpaper);
 }
