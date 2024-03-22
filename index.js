@@ -177,7 +177,7 @@ async function runMpvpaper(playlist, options) {
     shell.exec("tmux new -s waywe -d");
     shell.exec(
         `tmux send-keys -t waywe 'mpvpaper "${
-            options.monitor
+            options.monitor || '*'
         }" -o "${mpvOptions.join(" ")}"' Enter`
     );
     //await onExit(mpvpaper);
