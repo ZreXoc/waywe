@@ -4,7 +4,7 @@
 
 # Why
 
-It frustrating that wallpaper engine doesn't support linux, and any program I found trying to reproduce it not works well in wayland (at least for me). So I write this simple script to play videos in wallpaper engine as wallpaper.
+It's frustrating that wallpaper engine doesn't support linux. So I write this simple script to load videos from wallpaper engine and play it with [mpvpaper](https://github.com/GhostNaN/mpvpaper).
 
 # Usage
 
