@@ -17,7 +17,7 @@ cargo install --path . --locked
 waywe --help
 ```
 
-GitHub Actions 原生构建 Linux x86_64 和 ARM64 二进制，工作流产物分别为 `waywe-linux-x86_64` 和 `waywe-linux-aarch64`。
+Linux x86_64 和 ARM64 二进制可从 [Releases](https://github.com/ZreXoc/waywe/releases) 下载。压缩包包含可执行文件和 MIT 许可证，`SHA256SUMS` 提供文件校验值。
 
 ## 播放列表
 
@@ -130,6 +130,17 @@ waywe mpv -s DP-2 --json '["set_property","pause",true]'
 - 字段设为 `null` 或删除后继承下一级设置；删除 `we_overrides` 中对应条目后恢复 WE 设置。
 - 原生列表的相对视频路径以配置文件所在目录为基准。
 - 运行文件与日志：`$XDG_RUNTIME_DIR/waywe/`，每屏日志为 `屏幕名.log`。
+
+## 发布 Release
+
+推送与 `Cargo.toml` 版本一致的标签：
+
+```sh
+git tag v0.9.2
+git push origin v0.9.2
+```
+
+CI 完成两个架构的构建后，自动创建 GitHub Release 并上传压缩包和校验文件。
 
 ## 许可证
 

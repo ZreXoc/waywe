@@ -17,7 +17,7 @@ cargo install --path . --locked
 waywe --help
 ```
 
-GitHub Actions builds native Linux binaries for x86_64 and ARM64, available as `waywe-linux-x86_64` and `waywe-linux-aarch64` workflow artifacts.
+Linux x86_64 and ARM64 binaries are available from [Releases](https://github.com/ZreXoc/waywe/releases). Each archive contains the executable and MIT license; `SHA256SUMS` provides file checksums.
 
 ## Playlists
 
@@ -130,6 +130,17 @@ Use `--mpv-options 'profile=fast'` with `play` or `apply` for additional mpv ren
 - Set a field to `null` or remove it to inherit the next settings layer. Remove a playlist's `we_overrides` entry to use its WE settings directly.
 - Relative video paths in native playlists resolve from the configuration file's directory.
 - Runtime files and logs: `$XDG_RUNTIME_DIR/waywe/`, with one `SCREEN.log` per screen.
+
+## Publishing a release
+
+Push a version tag matching `Cargo.toml`:
+
+```sh
+git tag v0.9.2
+git push origin v0.9.2
+```
+
+CI builds both architectures, then creates the GitHub Release with archives and checksums.
 
 ## License
 
