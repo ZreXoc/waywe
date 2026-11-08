@@ -1,0 +1,17 @@
+[package]
+name = "waywe"
+version = "0.9.2"
+edition = "2024"
+rust-version = "1.89"
+description = "An mpvpaper manager with native playlists and Wallpaper Engine import"
+authors = ["ZreXoc"]
+license = "MIT"
+repository = "https://github.com/ZreXoc/waywe"
+readme = "README.md"
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rustix = { version = "1", features = ["process"] }

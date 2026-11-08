@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  check:
+    name: Linux ${{ matrix.arch }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust
+        run: rustup toolchain install stable --profile minimal --component rustfmt
+      - name: Check formatting
+        run: cargo +stable fmt --check
+      - name: Test
+        run: cargo +stable test --locked
+      - name: Build release
+        run: cargo +stable build --release --locked
+      - name: Smoke test
+        run: |
+          target/release/waywe --version
+          target/release/waywe --help
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: waywe-linux-${{ matrix.arch }}
+          path: target/release/waywe
+          if-no-files-found: error
